@@ -149,6 +149,10 @@ class Board:
         return
 
 
+    # Check to see if a given move is valid, i.e. if it will run the snake off the board
+    # Parameters:
+    #       new_head:   [x, y] coordinates of square in question
+    #
     def is_valid_move(self, new_head):
         if new_head[0] < 0 or new_head[1] < 0 or new_head[0] > (self.width - 1) or new_head[1] > (self.height - 1):
             return False
