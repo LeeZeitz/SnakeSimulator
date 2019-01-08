@@ -61,6 +61,7 @@ class Board:
     def random_coord(self, x_range, y_range, lower_limit):
         return [random.randint(lower_limit, x_range - 3), random.randint(lower_limit, y_range - 3)]
 
+
     # Starts a game
     #
     def play(self):
@@ -172,6 +173,12 @@ class Board:
             'snakes': [snake.serialize() for snake in self.snakes]
         })
 
-
+    def serialize(self):
+        return {
+            'height': self.height,
+            'width': self.width,
+            'food': self.food,
+            'snakes': [snake.serialize() for snake in self.snakes]
+        }
 
     
