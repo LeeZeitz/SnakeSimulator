@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import startGame from '../api';
+import Board from './board';
 
 class Content extends Component{
 
@@ -20,7 +21,7 @@ class Content extends Component{
     render() {
         return (
             <div>
-                asuh dude
+                <Board board={ this.state.board } />
             </div>
         )
     }
