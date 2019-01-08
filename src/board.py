@@ -73,6 +73,8 @@ class Board:
 
 
     # Sends the current board state to all the snakes, gets their moves, and calls update on the board state
+    # Parameters:
+    #       turn:   (int) integer corresponding to the number of turns elapsed in the current game
     #
     def step(self, turn):
         for snake in self.snakes:
