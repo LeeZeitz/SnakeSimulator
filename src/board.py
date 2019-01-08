@@ -64,38 +64,43 @@ class Board:
     # Starts a game
     #
     def play(self):
+        turn = 0
         # While there is more than one snake on the board, keep stepping forward
         while len([snake for snake in self.snakes if snake.health > 0]) > 1:
-            self.step()
+            self.step(turn)
             self.print()
+            turn += 1
 
 
     # Sends the current board state to all the snakes, gets their moves, and calls update on the board state
     #
-    def step(self):
+    def step(self, turn):
         for snake in self.snakes:
-            self.move(snake, snake.move(self))
+            self.move(snake, snake.move(self), turn)
         
         # Add food to the board if any food was eaten
         if self.add_food_flag:
-            for i in range (self.add_food):
+            for i in range (self.add_food_flag):
                 self.add_food()
             self.add_food_flag = 0
 
 
-    # Updates a given snake's state, and the food on the board, according to a given move. Will handle kiling the snake 
+    # Updates a given snake's state, and the food on the board, according to a given move. 
+    # Handles kiling the snake.
     # Parameters:
-    #       snake:      (Snake) snake object in game
-    #       move:       (str) string according to move to make, one of 'up', 'down', 'left', 'right'
+    #       snake:   (Snake) snake object in game
+    #       move:    (str) string according to move to make, one of 'up', 'down', 'left', 'right'
+    #       turn:    (int) integer corresponding to the number of turns elapsed in the current game
     #
-    def move(self, snake, move):
+    def move(self, snake, move, turn):
         new_head = [snake.head[0] + MOVES_DICT[move][0], snake.head[1] + MOVES_DICT[move][1]]
 
-        print (new_head)
+        print ('new head: ', new_head)
+
+        old_head = snake.head
 
         # Check if move is off the board and kill snake if it is
         if not self.is_valid_move(new_head):
-            print ('here')
             snake.health = 0
             return
         else: 
@@ -125,7 +130,17 @@ class Board:
                 else:
                     enemy_snake.health = 0
 
-        # Check if the new head square has somem grub
+        # Update the coordinates of the rest of the body
+        #snake.body.append(['penis'])
+
+
+        snake.body.insert(0, old_head)
+        print ('new body: ', snake.body)
+
+        if turn > 3:
+            snake.body.pop(-1)
+
+        # Check if the new head square has some grub
         if new_head in self.food:
             self.food = [f for f in self.food if f != new_head]
             snake.health = 100
