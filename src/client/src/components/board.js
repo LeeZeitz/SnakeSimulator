@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import Square from './square';
 
+// Props:
+//      board: board object
+//
 class Board extends Component {
 
     renderSquare(i) {
@@ -27,13 +30,22 @@ class Board extends Component {
         return board;
     }
 
+    /*
+    renderSnakeHeads = () => {
+        this.props.board.snakes.forEach(snake => {
+            
+        });
+    }
+    */
+
     render() {
         return (
-            <div>
+            <div className='board'>
                 { this.renderSquares() }
             </div>
         )
     }
+    
 }
 
 export default Board;

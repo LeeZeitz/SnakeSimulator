@@ -20,7 +20,7 @@ class Content extends Component{
 
     render() {
         return (
-            <div>
+            <div className='content'>
                 <Board board={ this.state.board } />
             </div>
         )
