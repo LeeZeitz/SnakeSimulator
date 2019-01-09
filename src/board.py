@@ -133,20 +133,18 @@ class Board:
                     enemy_snake.health = 0
 
         # Update the coordinates of the rest of the body
-        #snake.body.append(['penis'])
-
-
         snake.body.insert(0, old_head)
         print ('new body: ', snake.body)
-
-        if turn > 3:
-            snake.body.pop(-1)
 
         # Check if the new head square has some grub
         if new_head in self.food:
             self.food = [f for f in self.food if f != new_head]
             snake.health = 100
             self.add_food_flag += 1
+            
+        elif turn > 3:
+            snake.body.pop(-1)
+
 
         return
 
