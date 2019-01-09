@@ -3,6 +3,7 @@ from snake import Snake
 
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
+import time
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -12,6 +13,7 @@ BOARD_HEIGHT = 15
 BOARD_WIDTH = 15
 NUMBER_OF_SNAKES = 2
 NUMBER_OF_FOOD = 5
+DELAY = 1
 
 
 @socketio.on('subscribeToBoard')
@@ -44,6 +46,7 @@ def handleStartGame(json):
         board.print()
         turn += 1
         emit('board', board.serialize())
+        time.sleep(DELAY)
 
 if __name__ == '__main__':
 

@@ -7,7 +7,7 @@ MOVES_DICT = {
     'left': [-1, 0],
     'right': [1, 0]
 }
-LOWER_LIMIT = 3
+LOWER_LIMIT = 2
 
 # Board object that holds the state of the game
 #
@@ -134,20 +134,18 @@ class Board:
                     enemy_snake.health = 0
 
         # Update the coordinates of the rest of the body
-        #snake.body.append(['penis'])
-
 
         snake.body.insert(0, old_head)
         print ('new body: ', snake.body)
-
-        if turn > 3:
-            snake.body.pop(-1)
 
         # Check if the new head square has some grub
         if new_head in self.food:
             self.food = [f for f in self.food if f != new_head]
             snake.health = 100
             self.add_food_flag += 1
+
+        elif turn > LOWER_LIMIT:
+            snake.body.pop(-1)
 
         return
 
