@@ -1,5 +1,6 @@
 from board import Board
 from snake import Snake
+from snakes.codesnake import CodeSnake
 
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
@@ -33,7 +34,7 @@ def handleStartGame(json):
     '''
 
     # Create NUMBER_OF_SNAKES snake objects in an array
-    snakes = [Snake(x) for x in range(NUMBER_OF_SNAKES)]
+    snakes = [CodeSnake(x) for x in range(NUMBER_OF_SNAKES)]
 
     board = Board(BOARD_HEIGHT, BOARD_WIDTH, NUMBER_OF_FOOD, snakes)
 
