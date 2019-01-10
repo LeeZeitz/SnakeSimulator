@@ -48,9 +48,9 @@ def handleStartGame(json):
         emit('board', board.serialize())
         time.sleep(DELAY)
 
-def simulate_game():
+def simulate_game(id):
     
-    print ('here')
+    print (id)
 
     # Create NUMBER_OF_SNAKES snake objects in an array
     snakes = [CodeSnake(x) for x in range(NUMBER_OF_SNAKES)]
@@ -71,17 +71,15 @@ if __name__ == '__main__':
 
     #socketio.run(app)
 
-    for i in range(1000):
+    with Pool(3) as p:
+        games = p.map(simulate_game, [i for i in range(99)])
 
-        with Pool(10) as p:
-            games = p.apply(simulate_game)
+    print(type(games))
+    print(len(games))
 
-        print(type(games))
-        print(len(games))
+    games_col.insert_many(games)
 
-        games_col.insert_many(games)
-
-        print (i)
+    print (i)
 
 
 
