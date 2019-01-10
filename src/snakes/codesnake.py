@@ -61,13 +61,13 @@ class CodeSnake:
         if not safe(board, move):
             move = altMove(board, move, dest)
             whichMove = "alt"
-            print("alt")
+            #print("alt")
         
         #	print ("move: " + move)
 
         # Catch errors and display in taunt to debug.
         if move == "no_safe":
-            print ("ERROR!")
+            #print ("ERROR!")
             return "up"
 
         else:

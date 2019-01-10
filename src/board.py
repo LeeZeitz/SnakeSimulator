@@ -62,15 +62,29 @@ class Board:
         return [random.randint(lower_limit, x_range - 3), random.randint(lower_limit, y_range - 3)]
 
 
-    # Starts a game
+    # Invokes a game
     #
     def play(self):
-        turn = 0
+        turn = 0        
+        game = {
+            'all_moves': [],
+            'states': []
+        }
+
         # While there is more than one snake on the board, keep stepping forward
         while len([snake for snake in self.snakes if snake.health > 0]) > 1:
-            self.step(turn)
+            moves = self.step(turn)
+            game['all_moves'].append(moves)
+            game['states'].append(self.serialize())
             # self.print()
             turn += 1
+
+        for snake in self.snakes:
+            if snake.health > 0:
+                game['winner'] = snake.id
+                break
+        
+        return game
 
 
     # Sends the current board state to all the snakes, gets their moves, and calls update on the board state
@@ -78,14 +92,21 @@ class Board:
     #       turn:   (int) integer corresponding to the number of turns elapsed in the current game
     #
     def step(self, turn):
+
+        moves = []
+
         for snake in self.snakes:
-            self.move(snake, snake.move(self), turn)
+            move = snake.move(self)
+            moves.append(move)
+            self.move(snake, move, turn)
         
         # Add food to the board if any food was eaten
         if self.add_food_flag:
             for i in range (self.add_food_flag):
                 self.add_food()
             self.add_food_flag = 0
+        
+        return moves
 
 
     # Updates a given snake's state, and the food on the board, according to a given move. 

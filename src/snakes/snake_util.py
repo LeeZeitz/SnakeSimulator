@@ -130,13 +130,14 @@ def altMove(board, attemptedMove, dest):
 
 	return "no_safe"
 
-# Returns the direction to move towards the passed destination coordinante.
+# Returns the direction to move towards the provided destination coordinante.
 # Will not return a move which would result in turning back on ourselves.
 # Parameters: Board 		- board_frame class instance
 #			  dest  		- The square we are trying to reach
 #
 def findMove(board, dest):
 	lastMove = ""
+	nextMove = 'up'
 
 	distX = dest[0] - board.ourLoc[0]
 	distY = dest[1] - board.ourLoc[1]
