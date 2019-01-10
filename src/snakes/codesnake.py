@@ -1,5 +1,6 @@
 from . board_frame import BoardFrame
 from . snake_util import closestFood, weightedConeMove, findMove, safe, altMove, avoidSmallSpace
+import json
 
 HEAD_IMAGE_PATH = './media/snake_head.jpg'
 
@@ -14,10 +15,11 @@ class CodeSnake:
         self.length = 3
         self.health = 100
 
-        with open(HEAD_IMAGE_PATH, 'rb') as f:
-            image_data = f.read()
+        # with open(HEAD_IMAGE_PATH, 'rb') as f:
+        #     image_data = f.read()
 
-        self.head_image = image_data
+        #self.head_image = image_data
+        self.head_image = ''
 
 
     def move(self, data):
@@ -42,7 +44,7 @@ class CodeSnake:
             
             spaceMove = avoidSmallSpace(board)
 
-            if (spaceMove[1][1] < board.ourSnake['length'] or not safe(board,coneMove)):
+            if (spaceMove[1][1] < board.ourSnake['length'] or not safe(board, coneMove)):
                 move = spaceMove[0][0]
                 whichMove = "space"
             else:
@@ -66,16 +68,10 @@ class CodeSnake:
         # Catch errors and display in taunt to debug.
         if move == "no_safe":
             print ("ERROR!")
-            return{
-                "move": "up",
-                "taunt": "ERROR!"
-            }
+            return "up"
 
         else:
-            return {
-                "move": move,
-                "taunt": whichMove
-            }
+            return move
 	
 
 

@@ -69,7 +69,7 @@ class Board:
         # While there is more than one snake on the board, keep stepping forward
         while len([snake for snake in self.snakes if snake.health > 0]) > 1:
             self.step(turn)
-            self.print()
+            # self.print()
             turn += 1
 
 
@@ -97,8 +97,6 @@ class Board:
     #
     def move(self, snake, move, turn):
         new_head = [snake.head[0] + MOVES_DICT[move][0], snake.head[1] + MOVES_DICT[move][1]]
-
-        print ('new head: ', new_head)
 
         old_head = snake.head
 
@@ -136,7 +134,8 @@ class Board:
         # Update the coordinates of the rest of the body
 
         snake.body.insert(0, old_head)
-        print ('new body: ', snake.body)
+
+        snake.health -= 1
 
         # Check if the new head square has some grub
         if new_head in self.food:

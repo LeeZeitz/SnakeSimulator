@@ -8,19 +8,18 @@ import time
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app)
+socketio = SocketIO(app, ping_timeout=100000)
 
 BOARD_HEIGHT = 15
 BOARD_WIDTH = 15
 NUMBER_OF_SNAKES = 2
 NUMBER_OF_FOOD = 5
-DELAY = 0.5
+DELAY = 0.25
 
 
-@socketio.on('subscribeToBoard')
-def handleSubscribeToBoard(json):
-    print ('received json: ' + str(json))
-    emit('board', 'pen15')
+@socketio.on('message')
+def handleMessage(json):
+    print('received message: ' + str(json))
 
 @socketio.on('startGame')
 def handleStartGame(json):
@@ -44,7 +43,8 @@ def handleStartGame(json):
     # While there is more than one snake on the board, keep stepping forward
     while len([snake for snake in board.snakes if snake.health > 0]) > 1:
         board.step(turn)
-        board.print()
+        #board.print()
+        print (turn)
         turn += 1
         emit('board', board.serialize())
         time.sleep(DELAY)

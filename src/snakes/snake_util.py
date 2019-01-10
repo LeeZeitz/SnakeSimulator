@@ -5,8 +5,8 @@ Functions which support the snake's movements.
 import random
 import copy
 
-# Finds the closest food to the snake's current location.
-# Parameters: Board - board_frame class instance.
+#Finds the closest food to the snake's current location.
+#Parameters: Board - board_frame class instance.
 def closestFood(board):
 	maxDistance = 1000
 	coords = []
