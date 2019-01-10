@@ -6,8 +6,8 @@ import Square from './square';
 //
 class Board extends Component {
 
-    renderSquare(i, value) {
-        return <Square key={ i } value={ value } />;
+    renderSquare(i, value, head_image) {
+        return <Square key={ i } value={ value } image={ head_image } />;
     }
 
     renderSquares = () => {
@@ -15,11 +15,12 @@ class Board extends Component {
         let foods = [];
         let bodies = [];
         let heads =[];
+        let snakes = [];
         
         if (Object.keys(this.props.board).length > 0) {
 
             foods = this.props.board.food;
-            let snakes = this.props.board.snakes;
+            snakes = this.props.board.snakes;
             snakes.forEach(snake => {
                 heads.push(snake.head);
                 bodies = bodies.concat(snake.body);
@@ -32,17 +33,27 @@ class Board extends Component {
             let squares = []
             for (let j = 0; j < this.props.board.width; j++) {
                 let value = 0;
+                let head_image = '';
+
                 if (JSON.stringify(foods).indexOf(JSON.stringify([j, i])) !== -1){
                     value = 1;
                 }
-                else if (JSON.stringify(bodies).indexOf(JSON.stringify([j, i])) !== -1) {
-                    value = 3;
-                }
-                else if (JSON.stringify(heads).indexOf(JSON.stringify([j, i])) !== -1) {
-                    value = 2
-                }
+
+                for (let k = 0; k < snakes.length; k++){
+                    if (JSON.stringify(snakes[k].body).indexOf(JSON.stringify([j, i])) !== -1) {
+                        value = 3;
+                        break;
+                    }
+
+                    else if (JSON.stringify(snakes[k].head).indexOf(JSON.stringify([j, i])) !== -1) {
+                        value = 2;
+                        head_image = snakes[k].head_image;
+                        break;
+                    }
+                };
+
                 squares.push(
-                    this.renderSquare(count, value)
+                    this.renderSquare(count, value, head_image)
                 );
                 count++;
             }

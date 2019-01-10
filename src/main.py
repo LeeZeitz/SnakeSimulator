@@ -13,7 +13,7 @@ BOARD_HEIGHT = 15
 BOARD_WIDTH = 15
 NUMBER_OF_SNAKES = 2
 NUMBER_OF_FOOD = 5
-DELAY = 1
+DELAY = 0.5
 
 
 @socketio.on('subscribeToBoard')
