@@ -10,8 +10,6 @@ class Snake:
         self.id = id
         self.head = []
         self.body = []
-        self.length = 3
-        self.health = 100
 
         with open(HEAD_IMAGE_PATH, 'rb') as f:
             image_data = f.read()
