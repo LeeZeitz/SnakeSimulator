@@ -7,7 +7,7 @@ MOVES_DICT = {
     'left': [-1, 0],
     'right': [1, 0]
 }
-LOWER_LIMIT = 3
+LOWER_LIMIT = 2
 
 # Board object that holds the state of the game
 #
@@ -61,15 +61,30 @@ class Board:
     def random_coord(self, x_range, y_range, lower_limit):
         return [random.randint(lower_limit, x_range - 3), random.randint(lower_limit, y_range - 3)]
 
-    # Starts a game
+
+    # Invokes a game
     #
     def play(self):
-        turn = 0
+        turn = 0        
+        game = {
+            'all_moves': [],
+            'states': []
+        }
+
         # While there is more than one snake on the board, keep stepping forward
         while len([snake for snake in self.snakes if snake.health > 0]) > 1:
-            self.step(turn)
-            self.print()
+            moves = self.step(turn)
+            game['all_moves'].append(moves)
+            game['states'].append(self.serialize())
+            # self.print()
             turn += 1
+
+        for snake in self.snakes:
+            if snake.health > 0:
+                game['winner'] = snake.id
+                break
+        
+        return game
 
 
     # Sends the current board state to all the snakes, gets their moves, and calls update on the board state
@@ -77,14 +92,21 @@ class Board:
     #       turn:   (int) integer corresponding to the number of turns elapsed in the current game
     #
     def step(self, turn):
+
+        moves = []
+
         for snake in self.snakes:
-            self.move(snake, snake.move(self), turn)
+            move = snake.move(self)
+            moves.append(move)
+            self.move(snake, move, turn)
         
         # Add food to the board if any food was eaten
         if self.add_food_flag:
             for i in range (self.add_food_flag):
                 self.add_food()
             self.add_food_flag = 0
+        
+        return moves
 
 
     # Updates a given snake's state, and the food on the board, according to a given move. 
@@ -96,8 +118,6 @@ class Board:
     #
     def move(self, snake, move, turn):
         new_head = [snake.head[0] + MOVES_DICT[move][0], snake.head[1] + MOVES_DICT[move][1]]
-
-        print ('new head: ', new_head)
 
         old_head = snake.head
 
@@ -134,7 +154,8 @@ class Board:
 
         # Update the coordinates of the rest of the body
         snake.body.insert(0, old_head)
-        print ('new body: ', snake.body)
+
+        snake.health -= 1
 
         # Check if the new head square has some grub
         if new_head in self.food:
@@ -145,6 +166,9 @@ class Board:
         elif turn > 3:
             snake.body.pop(-1)
 
+
+        elif turn > LOWER_LIMIT:
+            snake.body.pop(-1)
 
         return
 
@@ -170,6 +194,12 @@ class Board:
             'snakes': [snake.serialize() for snake in self.snakes]
         })
 
-
+    def serialize(self):
+        return {
+            'height': self.height,
+            'width': self.width,
+            'food': self.food,
+            'snakes': [snake.serialize() for snake in self.snakes]
+        }
 
     
