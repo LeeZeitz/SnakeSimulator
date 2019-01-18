@@ -48,9 +48,9 @@ def handleStartGame(json):
         emit('board', board.serialize())
         time.sleep(DELAY)
 
-def simulate_game(id):
+def simulate_game(game_number):
     
-    print (id)
+    print (game_number)
 
     # Create NUMBER_OF_SNAKES snake objects in an array
     snakes = [CodeSnake(x) for x in range(NUMBER_OF_SNAKES)]
@@ -73,11 +73,8 @@ if __name__ == '__main__':
 
     for i in range(100000):
 
-        game = simulate_game()
+        game = simulate_game(i)
 
         games_col.insert_one(game)
-
-        print (i)
-
 
 
