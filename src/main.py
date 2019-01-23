@@ -19,6 +19,9 @@ NUMBER_OF_SNAKES = 4
 NUMBER_OF_FOOD = 5
 DELAY = 0.25
 
+db = ''
+games_col = ''
+
 @socketio.on('message')
 def handleMessage(json):
     print('received message: ' + str(json))
@@ -57,7 +60,13 @@ def simulate_game(game_number):
 
     board = Board(BOARD_HEIGHT, BOARD_WIDTH, NUMBER_OF_FOOD, snakes)
 
+    # Play the game
     game = board.play()
+
+    # Write game data to database
+    games_col.insert_one(game)  
+
+
 
     return game
 
@@ -71,10 +80,9 @@ if __name__ == '__main__':
 
     #socketio.run(app)
 
-    for i in range(100000):
+    with Pool(3) as p:
+        print (p.map(simulate_game, [x for x in range(100)]))
 
-        game = simulate_game(i)
-
-        games_col.insert_one(game)
+        #games_col.insert_one(game)
 
 
